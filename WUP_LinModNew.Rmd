@@ -65,7 +65,7 @@ model.1 <- lm(SIMS~ARM,data=data)
 summary.lm(model.1)
 ```
 
-
+Both the intercept and the coefficient of ARM strength are significantly different from 0.
 
 #### Prediction Interval
 
