@@ -1,7 +1,7 @@
 ---
 title: "linear model from Web"
-author: "lisa davis"
-date: "Put semester and year"
+author: "Lisa Davis"
+date: "Summer 2023"
 output:
    html_document:
          toc: true
@@ -31,33 +31,91 @@ data <- read.csv(file="https://onlinestatbook.com/case_studies_rvls/physical_str
 
 ```
 
+# Introduction
+
+Based on the ARM and GRIP strength we created a simulated strength. We will compare 3 models. The variable explained is numerical, so we used num~num file.
+
+
 ## Model 1 SIM~ARMS
 
-### scatterplot
+## Results
+### Graphical Results
+
+```{r}
+model.1 <- lm(SIMS~ARM,data=data)
+plot(SIMS~ARM,data=data)
+abline(model.1, col='red')
+```
+
+This graph shows as the arm strength goes up, the simulation goes up.
 
 ### Numerical results
 
+```{r}
+cor(SIMS~ARM,data=data)
+```
+
+The correlation between SIMS and ARM strength we can see that we got 0.6860073.
+The correlation is 0.69 which shows that arm strength is related to SIMS score.
 
 ### Inferential  (Build model.1)
 
-#### Predict at target point
+```{r}
+model.1 <- lm(SIMS~ARM,data=data)
+summary.lm(model.1)
+```
 
+Both the intercept and the coefficient of ARM strength are significantly different from 0.
 
-#### scatterplot with model fit
-  
+#### Prediction Interval
+
+```{r}
+newdata = data.frame(ARM=88,GRIP=94)
+predict(model.1, newdata, interval="predict")
+```
+
+The prediction interval is from -1.7 to 3.1 for SIMS score.
 
 ## Model 2 SIM~GRIP
 
-### Now add in scatterplot
+## Results
+### Graphical Results
+
+```{r}
+model.2 <- lm(SIMS~GRIP,data=data)
+plot(SIMS~GRIP,data=data)
+abline(model.2, col='red')
+```
+
+The graph shows that the grip strength goes up the simulation strength goes up as well.The spread of the points around the regression line in the grip plot are more spread out, than the arm strength plot.
 
 
 ### Numerical results 
 
+```{r}
+cor(SIMS~GRIP,data=data)
+```
+
+The correlation between SIMS and the ARM strength we can see that we got 0.6398458.
+The correlation is 0.64 which shows that the arm strength is related to SIMS score.
 
 ### Inferential  (Build model.2)
-  
 
-#### predict model.2 at target point
+```{r}
+model.2 <- lm(SIMS~GRIP,data=data)
+summary.lm(model.2)
+```
+
+Both the intercept and the coefficient of GRIP strength are significantly different from zero.
+
+#### prediction Interval
+
+```{r}
+newdata = data.frame(ARM=88,GRIP=94)
+predict(model.2, newdata, interval="predict")
+```
+
+The prediction interval is from -3.1 to 2.0 for SIMS score.
 
 #### now add the model fit to our plot for model.2
   
@@ -65,19 +123,59 @@ data <- read.csv(file="https://onlinestatbook.com/case_studies_rvls/physical_str
 
 ## Model 3 SIM~ARM+GRIP
 
+```{r}
+model.3 <- lm(SIMS~ARM+GRIP,data=data)
+print(summary(model.3))
+```
+
+As the GRIP/ARM strength increases, the SIMS increases. The spread of the points around the regression line in the GRIP plot are more spread out, than the GRIP/ARM plot.
+
 ### Numerical results (cor)
 
-`
+```{r}
+cor(SIMS~ARM+GRIP,data=data)
+```
+
+The correlation is 0.73 which shows that the GRIP/ARM strength is related to SIMS score.
   
 ### Inferential  (Build 2-dimentional model.3)
 
+```{r}
+model.3 <- lm(SIMS~ARM+GRIP,data=data)
+summary.lm(model.3)
+```
+
+The inferential data shows as the GRIP/ARM strength increases, the SIMS increases. The spread of the points around the regression line in the GRIP plot are more spread out, than the GRIP/ARM plot.
+
 #### predict model.3 at target point
-  
+
+```{r}
+newdata = data.frame(ARM=88,GRIP=94)
+predict(model.3, newdata, interval="predict")
+```
+The prediction interval is from 0.15 to -2.3 for SIMS score.
 
 ## Comparing nested models ANOVA Test
 
 ### Model.1 vs Model.3
+
+```{r}
+anova(model.1,model.3)
+```
+
+I reject the null hypothesis because of how low the p value is which is 0.0000049. Model one is better than two because of model; one rss score being lower than model two.
+
 ### Model.2 vs Model.3
 
-## Informally compare Model.1 with model.2
+```{r}
+anova(model.2,model.3)
+```
+
+Model three has lower rss score than model two therefore it made it a smaller model.
+
+## Disscussion and Conclusion
+
+Model 3 is the best of them all since it carries a lower rss than the rest. Model 1 is better than model 2 and model 3 is better than model 2.
+
+
 
