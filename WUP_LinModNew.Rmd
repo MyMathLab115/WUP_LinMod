@@ -47,7 +47,7 @@ plot(SIMS~ARM,data=data)
 abline(model.1, col='red')
 ```
 
-
+This graph shows as the arm strength goes up, the simulation goes up.
 
 ### Numerical results
 
